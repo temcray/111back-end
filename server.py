@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from sqlalchemy import (
     create_engine,
     Column,
@@ -42,6 +42,28 @@ class User(Base):
         user =relationship("User", back_populates="expenses") #expenses.user.username
 #Crate tables
 Base.metadata.create_all(engine)
+
+#Health check route
+@app.get("/api/health")
+def health_check():
+    return jsonify({"status": "ok"}), 200
+
+#User routes
+@app.post("/api/register")
+def register():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+    print(data)
+    #print(username)
+    #print(password)
+
+
+    new_user = User(username=username, password=password ) #Create new User
+    session.add(new_user) #add to session
+    session.commit() #commit to DB
+
+    return "Created",201
 
 
 #Ensres the server runs only when this script is executed directly
