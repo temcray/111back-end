@@ -54,17 +54,45 @@ def register():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
+
+    #Validation
+    existing_user = session.query(User).filter_by(username=username).first()
+    if existing_user is not None:
+
+    
+        return jsonify({"massage": "Username already Taken"})
+
+
+
     print(data)
-    #print(username)
-    #print(password)
+    print(username)
+    print(password)
 
 
     new_user = User(username=username, password=password ) #Create new User
     session.add(new_user) #add to session
     session.commit() #commit to DB
 
-    return "Created",201
+    return jsonify({"message": "User reqistered succesfully"}), 201
 
+
+#Login 
+@app.post("/api/login")
+def login():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"message": "Username and password required"}), 400
+    
+    user = session.query(User).filter_by(username=username).first()
+
+    if user and user.password == password:
+        return jsonify({"message": "Login successfully"}), 200 # ok
+    
+    return jsonify({"message": "Invaild"}), 401 # 
+    #return "401"
 
 #Ensres the server runs only when this script is executed directly
 if __name__== "__main__":
