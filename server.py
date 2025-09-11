@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from sqlalchemy import (
     create_engine,
     Column,
@@ -214,6 +214,49 @@ def delete_expense(expense_id):
     
     expense = [exp for exp in expense if exp["id"]!= expense_id]
     return jsonify({"message": f"Expense with ID {expense_id} deleted successfully"}), 200
+
+
+#Frontend endpoints
+@app.get("/")
+@app.get("/home")
+@app.get("/index")
+def home():
+    return render_template("home.html")
+
+@app.get("/about")
+def about():
+    my_student = {"name": "Tatiana", "cohort": 59, "year": 2026}
+    return render_template("about.html", student=my_student)
+
+
+@app.get("/students")
+def students_list():
+    students = [
+
+        { 
+        "name": "kelly",
+        "age": 44,
+        "cohort": "59",
+        "favorite_color": "#ff0000"
+        },
+
+        { 
+        "name": "marshall",
+        "age": 9,
+        "cohort": "59",
+        "favorite_color": "#0026ff"
+        },
+
+        { 
+        "name": "mark",
+        "age": 36,
+        "cohort": "59",
+        "favorite_color": "#12b822"
+        },
+    ]
+
+    return render_template("students-list.html", students=students)
+
 
     
 #Ensres the server runs only when this script is executed directly

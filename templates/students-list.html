@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>student List</h1>
+
+<ul>
+  {% for student in student %}
+    <li>{{student.name}} {{student.age}} CH#{{student.cohort}}</li>
+  {% endfor %}
+</ul>
+{% endblock content %}

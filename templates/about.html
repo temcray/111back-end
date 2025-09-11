@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>About page</h1>
+
+
+{{ student }}  <!--Jinja2-->
+
+
+<p>My name is {{ student.name }}</p>
+<p>My cohort is {{ student.cohort }}</p>
+<p>The year is {{ student.year }}</p>
+{% endblock content %}
